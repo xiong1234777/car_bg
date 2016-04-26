@@ -1,1 +1,1 @@
-include ':app', ':tao_pg'
+include ':app', ':tao_pg', ':library'

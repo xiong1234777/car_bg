@@ -1,6 +1,5 @@
 package comm.utils;
 
-import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
@@ -9,83 +8,30 @@ import org.xutils.x;
  */
 public class XutilsHelper {
 
+  //请求参数信息
+
   //doget请求
-  public static void fetch(RequestParams requestParams,int type,final MyCallBack callBack) {
+  public static void fetch(RequestParams params, int type, final MyCallBack
+          callBack) {
     if (type == 0) {
-      x.http().get(requestParams, new Callback.ProgressCallback<String>() {
-        @Override
-        public void onSuccess(String result) {
-          callBack.onSuccess(result);
-        }
-
-        @Override
-        public void onError(Throwable ex, boolean isOnCallback) {
-          callBack.onError(ex, isOnCallback);
-        }
-
-        @Override
-        public void onCancelled(CancelledException cex) {
-
-        }
-        @Override
-        public void onFinished() {
-          callBack.onFinished();
-        }
-
-        @Override
-        public void onWaiting() {
-          callBack.onWaiting();
-        }
-
-        @Override
-        public void onStarted() {
-          callBack.onStarted();
-        }
-        @Override
-        public void onLoading(long total, long current, boolean isDownloading) {
-          callBack.onLoading(total, current, isDownloading);
-        }
-      });
+      //get
+      x.http().get(params, callBack);
+      
     } else if (type == 1) {
-      x.http().post(requestParams, new Callback.ProgressCallback<String>() {
-        @Override
-        public void onSuccess(String result) {
-          callBack.onSuccess(result);
-        }
-
-        @Override
-        public void onError(Throwable ex, boolean isOnCallback) {
-          callBack.onError(ex, isOnCallback);
-        }
-
-        @Override
-        public void onCancelled(CancelledException cex) {
-
-        }
-        @Override
-        public void onFinished() {
-          callBack.onFinished();
-        }
-
-        @Override
-        public void onWaiting() {
-          callBack.onWaiting();
-        }
-
-        @Override
-        public void onStarted() {
-          callBack.onStarted();
-        }
-
-        @Override
-        public void onLoading(long total, long current, boolean isDownloading) {
-          callBack.onLoading(total, current, isDownloading);
-        }
-      });
+      //post
+      x.http().post(params, callBack);
     }
+    
+  }
+  
+  //dopost
+  
+  
+  public static String getResStr(int strid) {
+    return x.app().getString(strid);
   }
 
-  public static String getResStr(int strid){
-    return x.app().getString(strid);
+  public static String[] getResArr(int arr_id) {
+    return x.app().getApplicationContext().getResources().getStringArray(arr_id);
   }
 }

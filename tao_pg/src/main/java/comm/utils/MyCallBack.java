@@ -1,29 +1,47 @@
 package comm.utils;
 
 
+import org.xutils.common.Callback;
+
 /**
  * Created by xiaohu on 2016/3/26.
  * 我的回调接口
  */
-public abstract class MyCallBack {
+public  class MyCallBack<T> implements Callback.ProgressCallback<T>{
 
-    /**成功时回调**/
-    public abstract void onSuccess(String result);
-    /**失败时回调**/
+
+    @Override
+    public void onWaiting() {
+
+    }
+
+    @Override
+    public void onStarted() {
+
+    }
+
+    @Override
+    public void onLoading(long total, long current, boolean isDownloading) {
+
+    }
+
+    @Override
+    public void onSuccess(T result) {
+
+    }
+
+    @Override
     public void onError(Throwable ex, boolean isOnCallback) {
-        //失败时提示
         UiTools.showToast(ex.getMessage());
     }
-    /**完成时回调**/
+
+    @Override
+    public void onCancelled(CancelledException cex) {
+
+    }
+
+    @Override
     public void onFinished() {
-    }
-    /**等待时时回调**/
-    public void onWaiting() {
-    }
-    /**开始时回调**/
-    public void onStarted() {
-    }
-    /**正在请求时回调**/
-    public void onLoading(long total, long current, boolean isDownloading) {
+
     }
 }

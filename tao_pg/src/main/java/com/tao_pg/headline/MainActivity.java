@@ -3,39 +3,50 @@ package com.tao_pg.headline;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import com.tao_pg.headline.fragment.NewsItemFrag;
+
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import comm.ActivityCollector;
+import comm.BaseActivity;
+import comm.utils.XutilsHelper;
+import comm.view.TabView;
+
+public class MainActivity extends BaseActivity {
 
   private DrawerLayout mDrawerLayout = null;
   private ImageView iv_book_image = null;
+  @ViewInject(R.id.tab_view)
+  private TabView m_tab_view;
 
   @TargetApi(Build.VERSION_CODES.LOLLIPOP)
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-
+    x.view().inject(this);
     //设置 toolbar
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
+
     //设置 DrawerLayout
     mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-    iv_book_image = (ImageView) findViewById(R.id.iv_book_image);
-    iv_book_image.setImageResource(R.drawable.ic_launcher);
 
     //开关
     ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar,
@@ -50,19 +61,24 @@ public class MainActivity extends AppCompatActivity {
     NavigationView  mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
     setupDrawerContent(mNavigationView);
 
-    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-    fab.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", new View.OnClickListener() {
-                  @Override
-                  public void onClick(View v) {
-                    Toast.makeText(getApplicationContext(),"你好",Toast.LENGTH_LONG).show();
-                  }
-                }).show();
-      }
-    });
+
+    List<String> titles = new ArrayList<>();
+    List<Fragment> fragments = new ArrayList<>();
+
+    String [] type_names = XutilsHelper.getResArr(R.array.news_type_name);
+    String [] types = XutilsHelper.getResArr(R.array.news_type);
+
+    for (int i = 0; i <type_names.length ; i++) {
+      titles.add(type_names[i]);
+    }
+
+    for (int i = 0; i <types.length ; i++) {
+      fragments.add(NewsItemFrag.insatnce(types[i]));
+    }
+
+    //设置tab
+    m_tab_view.setTandC(titles,fragments,getSupportFragmentManager(), TabLayout.MODE_SCROLLABLE);
+
   }
   
   private void setupDrawerContent(NavigationView mNavigationView) {
@@ -117,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
 
     //noinspection SimplifiableIfStatement
     if (id == R.id.action_settings) {
+      ActivityCollector.finshAll();
       return true;
     }
 

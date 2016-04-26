@@ -8,10 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.xutils.x;
+
 public abstract class BaseFrag<V, T extends BaseP<V>> extends Fragment {
   protected View mRootView = null;
   protected T mPresenter = null;
-  protected Context mContext = null;
 
   //初始化数据
   public abstract void initData(Bundle savedInstanceState);
@@ -28,8 +29,6 @@ public abstract class BaseFrag<V, T extends BaseP<V>> extends Fragment {
     // TODO Auto-generated method stub
     super.onAttach(context);
 
-    mContext = context;
-
     //初始化presenter
     mPresenter = createPresenter();
 
@@ -44,8 +43,18 @@ public abstract class BaseFrag<V, T extends BaseP<V>> extends Fragment {
   public View onCreateView(LayoutInflater inflater,
                            @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-    //初始化根布局
-    mRootView = inflater.inflate(getLayoutId(), null);
+    if(mRootView !=null){
+
+      ViewGroup parent = (ViewGroup) mRootView.getParent();
+      if (parent != null){
+        parent.removeView(mRootView);
+      }
+    }else{
+      //初始化根布局
+      mRootView = inflater.inflate(getLayoutId(), null);
+
+      x.view().inject(this,mRootView);
+    }
 
     //依赖注解xutils
     return mRootView;
@@ -68,18 +77,6 @@ public abstract class BaseFrag<V, T extends BaseP<V>> extends Fragment {
     if (mPresenter != null) {
       mPresenter.detachView();
     }
-
-    if (mContext != null) {
-      mContext = null;
-    }
   }
 
-  /*设置frg对应的view是否显示的方法*/
-  @Override
-  public void setMenuVisibility(boolean menuVisible) {
-    if (getView() != null) {
-      getView().setVisibility(menuVisible ? View.VISIBLE : View.GONE);
-    }
-    super.setMenuVisibility(menuVisible);
-  }
 }
