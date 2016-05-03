@@ -1,10 +1,10 @@
-package com.tao_pg.headline.presenter;
+package com.tb.taobaoguang.presenter;
 
 import android.text.TextUtils;
 import android.util.ArrayMap;
 
 import com.google.gson.reflect.TypeToken;
-import com.tao_pg.headline.bean.NewsInfo;
+import com.tb.taobaoguang.bean.NewsInfo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -57,6 +57,7 @@ public class NewsPresenter extends BaseP<INewsView> {
       
       @Override
       public void onSuccess(String result) {
+
 
         super.onSuccess(result);
 

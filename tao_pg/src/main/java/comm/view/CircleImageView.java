@@ -16,7 +16,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 
-import com.tao_pg.headline.R;
+import com.tb.taobaoguang.R;
 
 public class CircleImageView extends AppCompatImageView {
 

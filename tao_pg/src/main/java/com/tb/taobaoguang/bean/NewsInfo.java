@@ -1,4 +1,4 @@
-package com.tao_pg.headline.bean;
+package com.tb.taobaoguang.bean;
 
 /**
  * Created by SX on 2016/4/23.

@@ -6,7 +6,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.cjj.MaterialRefreshLayout;
-import com.tao_pg.headline.R;
+import com.tb.taobaoguang.R;
 
 import org.xutils.common.util.LogUtil;
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.tao_pg.headline"
+<manifest package="com.tb.taobaoguang"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".NewsDetailActivity"
+            android:name="com.tao_pg.com.tb.taobaoguang.NewsDetailActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

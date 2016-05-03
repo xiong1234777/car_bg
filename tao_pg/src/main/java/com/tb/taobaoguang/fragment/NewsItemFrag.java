@@ -1,4 +1,4 @@
-package com.tao_pg.headline.fragment;
+package com.tb.taobaoguang.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,11 +13,11 @@ import android.widget.TextView;
 
 import com.cjj.MaterialRefreshLayout;
 import com.cjj.MaterialRefreshListener;
-import com.tao_pg.headline.NewsDetailActivity;
-import com.tao_pg.headline.R;
-import com.tao_pg.headline.bean.NewsInfo;
-import com.tao_pg.headline.presenter.INewsView;
-import com.tao_pg.headline.presenter.NewsPresenter;
+import com.tb.taobaoguang.NewsDetailActivity;
+import com.tb.taobaoguang.R;
+import com.tb.taobaoguang.bean.NewsInfo;
+import com.tb.taobaoguang.presenter.INewsView;
+import com.tb.taobaoguang.presenter.NewsPresenter;
 
 import org.xutils.common.util.DensityUtil;
 import org.xutils.common.util.LogUtil;
@@ -145,6 +145,7 @@ public class NewsItemFrag extends BaseListFrag<INewsView, NewsPresenter> impleme
   protected NewsPresenter createPresenter() {
     return new NewsPresenter();
   }
+
 
   @Override
   public void onFail() {
