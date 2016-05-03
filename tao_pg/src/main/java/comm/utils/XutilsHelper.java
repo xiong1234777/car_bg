@@ -1,6 +1,10 @@
 package comm.utils;
 
+import android.widget.ImageView;
+
+import org.xutils.common.util.DensityUtil;
 import org.xutils.http.RequestParams;
+import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
 /**
@@ -8,7 +12,8 @@ import org.xutils.x;
  */
 public class XutilsHelper {
 
-  //请求参数信息
+  //图像的配置
+  private static ImageOptions mImageOptions =new ImageOptions.Builder().setRadius(DensityUtil.dip2px(10)).build();
 
   //doget请求
   public static void fetch(RequestParams params, int type, final MyCallBack
@@ -23,15 +28,18 @@ public class XutilsHelper {
     }
     
   }
-  
-  //dopost
-  
-  
+
   public static String getResStr(int strid) {
     return x.app().getString(strid);
   }
 
   public static String[] getResArr(int arr_id) {
     return x.app().getApplicationContext().getResources().getStringArray(arr_id);
+  }
+
+
+  public static void showImage(ImageView view, String head_img) {
+
+    x.image().bind(view,head_img,mImageOptions);
   }
 }

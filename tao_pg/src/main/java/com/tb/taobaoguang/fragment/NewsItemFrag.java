@@ -174,12 +174,15 @@ public class NewsItemFrag extends BaseListFrag<INewsView, NewsPresenter> impleme
   @Override
   public void onSuccess(List datas) {
 
+    //显示加载下错误的页面
     showNormal();
 
+    //添加说有的数据
     mDatas.addAll(datas);
 
     LogUtil.e(m_type + "页");
 
+    //更新数据
     setAdapterOrUpDate();
 
 
