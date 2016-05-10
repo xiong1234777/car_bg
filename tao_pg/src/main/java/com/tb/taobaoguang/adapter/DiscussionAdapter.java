@@ -21,6 +21,7 @@ import comm.utils.XutilsHelper;
  */
 public class DiscussionAdapter extends CommonAdapter<Discussion>{
 
+  //点击事件的回调
   private Callback mCallBack;
 
   public DiscussionAdapter(Context context, List<Discussion> mDatas,Callback
@@ -65,7 +66,6 @@ public class DiscussionAdapter extends CommonAdapter<Discussion>{
     });
 
   }
-
 
   //这是局部点击事件的回掉
   public interface Callback{

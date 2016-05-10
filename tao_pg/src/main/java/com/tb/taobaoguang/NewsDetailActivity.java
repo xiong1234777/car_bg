@@ -1,6 +1,8 @@
 package com.tb.taobaoguang;
 
+import android.annotation.TargetApi;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -8,10 +10,12 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.AbsListView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 
-import org.xutils.common.util.LogUtil;
+import com.github.lzyzsd.circleprogress.CircleProgress;
+
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
@@ -24,22 +28,50 @@ import comm.utils.UiTools;
 public class NewsDetailActivity extends BaseActivity {
 
 
-  @ViewInject(R.id.web_content)
-  private WebView mWeb;
+  private WebView mWeb = null;
 
-  @ViewInject(R.id.pb_progress)
-  private ProgressBar mProgress;
+  @ViewInject(R.id.circle_progress)
+  private CircleProgress mProgress;
 
   @ViewInject(R.id.lv_discussion)
   private ListView lv_discussion;
 
+  private Toolbar toolbar = null;
+
+  @TargetApi(Build.VERSION_CODES.M)
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
     setContentView(R.layout.activity_news_detail);
     x.view().inject(this);
-    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+    //初始化toolBar
+    initToolBar();
+
+    //获取网页的地址
+    String url = getIntent().getStringExtra("url");
+
+    if (null == url) {
+      UiTools.showToast("加载失败");
+      return;
+    }
+
+
+    //初始化webView
+    initWebView(url);
+
+    //获取评论列表
+    getDiscussion();
+
+    lv_discussion.setAdapter(new ArrayAdapter<String>(this,android.R.layout
+            .simple_list_item_1,
+            new String[]{"还是社会"}){});
+
+  }
+
+  private void initToolBar() {
+    toolbar= (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
 
@@ -50,20 +82,42 @@ public class NewsDetailActivity extends BaseActivity {
         finish();
       }
     });
+  }
 
-    //获取网页的地址
-    String url = getIntent().getStringExtra("url");
+  //获取评论列表
+  private void getDiscussion() {
 
-    if (null == url) {
-      UiTools.showToast("加载失败");
-      return;
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    //先哦会webView
+    if (mWeb != null) {
+      mWeb.clearHistory();
+      mWeb.clearCache(true);
+      mWeb.destroy();
+      mWeb = null;
     }
+  }
 
-    LogUtil.e(url);
+  
+  private void initWebView(String url) {
 
+    //初始化 webView
+    mWeb = new WebView(this);
+
+    mWeb.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT,
+            AbsListView.LayoutParams
+                    .MATCH_PARENT));
+
+    //把webView 添加到最前面
+    lv_discussion.addHeaderView(mWeb);
+    //设置webView
     WebSettings settings = mWeb.getSettings();
     settings.setJavaScriptEnabled(true);// 表示支持js
     settings.setTextSize(WebSettings.TextSize.NORMAL);
+
     mWeb.setWebViewClient(new WebViewClient() {
 
       /**
@@ -85,6 +139,7 @@ public class NewsDetailActivity extends BaseActivity {
         System.out.println("网页开始结束");
 
         mProgress.setVisibility(View.GONE);
+
       }
 
       /**
@@ -97,7 +152,6 @@ public class NewsDetailActivity extends BaseActivity {
         view.loadUrl(url);
 
         return true;
-        // return super.shouldOverrideUrlLoading(view, url);
       }
     });
 
@@ -108,7 +162,7 @@ public class NewsDetailActivity extends BaseActivity {
        */
       @Override
       public void onProgressChanged(WebView view, int newProgress) {
-        System.out.println("加载进度:" + newProgress);
+        mProgress.setProgress(newProgress);
         super.onProgressChanged(view, newProgress);
       }
 
@@ -117,27 +171,14 @@ public class NewsDetailActivity extends BaseActivity {
        */
       @Override
       public void onReceivedTitle(WebView view, String title) {
-        System.out.println("网页标题:" + title);
+
+        toolbar.setTitle(title);
+
         super.onReceivedTitle(view, title);
       }
     });
 
-    mWeb.loadUrl(url);// 加载网页
-
-    //获取评论列表
-
-
-  }
-
-
-  @Override
-  protected void onDestroy() {
-    super.onDestroy();
-    if (mWeb != null) {
-      mWeb.clearHistory();
-      mWeb.clearCache(true);
-      mWeb.destroy();
-      mWeb = null;
-    }
+    // 加载网页
+    mWeb.loadUrl(url);
   }
 }

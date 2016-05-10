@@ -40,7 +40,6 @@ public class NewsItemFrag extends BaseListFrag<INewsView, NewsPresenter> impleme
 
   private int page = 1;
   private String m_type = null;
-
   private View networkErrorView = null;
 
   public static NewsItemFrag insatnce(String news_type) {
@@ -67,11 +66,13 @@ public class NewsItemFrag extends BaseListFrag<INewsView, NewsPresenter> impleme
     //获取参数
     m_type = getArguments().getString(NEWS_TYPE);
 
+    //初始化监听事件
     initListener();
 
-
     if (m_type != null) {
-      mPresenter.fetchNews(m_type, page);
+//      //弹出进度条
+      mRefresh.autoRefresh();
+      //mPresenter.fetchNews(m_type, page);
     }
 
 

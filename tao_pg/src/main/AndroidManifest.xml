@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.tao_pg.com.tb.taobaoguang.NewsDetailActivity"
+            android:name=".NewsDetailActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

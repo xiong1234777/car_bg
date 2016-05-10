@@ -48,7 +48,6 @@ public abstract class BaseListFrag<I, C extends BaseP<I>> extends BaseFrag<I, C>
   public void initData(Bundle savedInstanceState) {
     mRefresh = (MaterialRefreshLayout) mRootView.findViewById(R.id.refresh);
     mListView = (ListView) mRootView.findViewById(R.id.lv_task_list);
-    mRefresh.setSunStyle(true);
     mListView.setOnItemClickListener(this);
 //    mRefresh.setProgressColors(new int[]{R.color.colorAccent, R.color.colorPrimary, R.color
 //            .colorPrimaryDark});

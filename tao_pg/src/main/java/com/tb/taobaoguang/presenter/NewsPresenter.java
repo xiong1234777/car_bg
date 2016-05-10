@@ -1,10 +1,11 @@
 package com.tb.taobaoguang.presenter;
 
 import android.text.TextUtils;
-import android.util.ArrayMap;
 
 import com.google.gson.reflect.TypeToken;
+import com.tb.taobaoguang.bean.Discussion;
 import com.tb.taobaoguang.bean.NewsInfo;
+import com.tb.taobaoguang.global.UrlHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,7 +14,6 @@ import org.xutils.common.util.LogUtil;
 import org.xutils.http.RequestParams;
 
 import java.util.List;
-import java.util.Map;
 
 import comm.BaseP;
 import comm.utils.DataTools;
@@ -21,50 +21,57 @@ import comm.utils.MyCallBack;
 import comm.utils.UiTools;
 import comm.utils.XutilsHelper;
 
+
 /**
  * Created by SX on 2016/4/23.
  */
 public class NewsPresenter extends BaseP<INewsView> {
-  StringBuilder m_sb_tpg_host = null;
+
   //请求参数
-  Map<String, String> m_mapParam = null;
-  List<NewsInfo> m_news_info_list = null;
+  private List<NewsInfo> mNewsInfos = null;
+  private List<Discussion> mDiscussions = null;
 
-  
+
+
+  //获取评论的信息
+  public void fetchDisccsions() {
+
+//    XutilsHelper.fetch(new RequestParams(UrlHelper.getNesDiscussionUrl()),0, new
+//            MyCallBack<String>(){
+//
+//              @Override
+//              public void onSuccess(String result) {
+//                  super.onSuccess(result);
+//                  //判断相同的东西，我到要不要做封装呢
+//
+//              }
+//            });
+  }
+
+
+  //做评论
+  public void updateDisccsion(){
+
+  }
+
+
   public void fetchNews(String type, int pn) {
-    
-    if (m_mapParam == null) {
-      
-      m_mapParam = new ArrayMap<>();
-      m_mapParam.clear();
-      
-    }
 
+    //打印记录
+    LogUtil.e(UrlHelper.getNewsItemsUrl("taobpg", "123", type, pn).toString());
 
-    m_sb_tpg_host = new StringBuilder("http://www.taobpg.com/newsinterface/");
-
-
-//    //设置请求参数
-    m_sb_tpg_host.append("sharenewslist").
-            append("?account=").append("taobpg").append("&type=").append(type).
-            append("&pwd=").append("123").
-            append("&pn=").append(pn + "");
-
-
-    LogUtil.e(m_sb_tpg_host.toString());
-
-    XutilsHelper.fetch(new RequestParams(m_sb_tpg_host.toString()), 0, new MyCallBack<String>() {
+    //发送请求
+    XutilsHelper.fetch(new RequestParams(UrlHelper.getNewsItemsUrl("taobpg", "123", type, pn)),
+            0, new MyCallBack<String>() {
       
       @Override
       public void onSuccess(String result) {
-
-
         super.onSuccess(result);
 
         if (TextUtils.isEmpty(result)) {
           return;
         }
-        
+
         try {
           JSONObject obj = new JSONObject(result);
           int status = obj.getInt("status");
@@ -72,16 +79,18 @@ public class NewsPresenter extends BaseP<INewsView> {
           if (status == 1) {
             JSONArray array = obj.getJSONArray("list");
 
-            if (m_news_info_list != null) {
-              m_news_info_list.clear();
+            if (mNewsInfos != null) {
+              mNewsInfos.clear();
             }
 
-            m_news_info_list = DataTools.getGosn().fromJson(array.toString(), new
+            //获取json
+            mNewsInfos = DataTools.getGosn().fromJson(array.toString(), new
                     TypeToken<List<NewsInfo>>() {
                     }.getType());
-            
+
+            //presenter 绑定后 执行
             if (isAttached()) {
-              getView().onSuccess(m_news_info_list);
+              getView().onSuccess(mNewsInfos);
             }
 
 
